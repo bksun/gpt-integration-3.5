@@ -44,19 +44,20 @@ def main():
                         
             # Add code to send request...
             # Send request to Azure OpenAI model
+            messages_array.append({"role": "user", "content": input_text})
+
             response = client.chat.completions.create(
                 model=azure_oai_deployment,
-                temperature=1,
-                max_tokens=400,
-                messages=[
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": input_text}
-                ]
+                temperature=0.7,
+                max_tokens=1200,
+                messages=messages_array
             )
             generated_text = response.choices[0].message.content
+            # Add generated text to messages array
+            messages_array.append({"role": "assistant", "content": generated_text})
 
-            # Print the response
-            print("Response: " + generated_text + "\n")
+            # Print generated text
+            print("Summary: " + generated_text + "\n")
             
 
     except Exception as ex:
